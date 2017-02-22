@@ -1,4 +1,5 @@
 target/
+webapp/WEB-INF/classes
 
 ### IntelliJ IDEA ###
 .idea

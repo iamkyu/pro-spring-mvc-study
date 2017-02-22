@@ -8,7 +8,5 @@
 
     <context:annotation-config/>
 
-    <bean name="/hello" class="com.chap04.controller.HelloSpring"/>
-
-    <bean class="org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerMapping" />
+    <bean name="/hello" class="com.chap04.controller.HelloController"/>
 </beans>

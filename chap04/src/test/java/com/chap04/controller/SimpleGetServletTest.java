@@ -1,7 +1,6 @@
 package com.chap04.controller;
 
 import com.chap04.controller.helper.AbstractDispatcherServletTest;
-import org.junit.Ignore;
 import org.junit.Test;
 import org.springframework.mock.web.MockHttpServletRequest;
 import org.springframework.mock.web.MockHttpServletResponse;
@@ -35,7 +34,6 @@ public class SimpleGetServletTest extends AbstractDispatcherServletTest {
 
     @Test
     public void customDispatcherServletTest() throws ServletException, IOException {
-        //Set Servlet
         ConfigurableDispatcherServlet servlet = new ConfigurableDispatcherServlet();
         servlet.setRelativeLocations(getClass(), "spring-servlet.xml");
         servlet.setClasses(HelloSpring.class);
@@ -47,16 +45,18 @@ public class SimpleGetServletTest extends AbstractDispatcherServletTest {
         MockHttpServletResponse resp = new MockHttpServletResponse();
 
         servlet.service(req, resp);
+
+        ModelAndView mav = servlet.getModelAndView();
+        assertThat(mav .getViewName(), is( "/WEB-INF/view/hello.jsp"));
+        assertThat(mav.getModel().get("message"), is("Hello spring"));
     }
 
-
-    //FIXME ModelAndVIew 널포인트 예외
-    @Test @Ignore
-    public void helloController() throws ServletException, IOException {
+    @Test
+    public void customDispatcherServletTestWithHelper() throws ServletException, IOException {
         ModelAndView mav = setRelativeLocations("spring-servlet.xml")
                 .setClasses(HelloSpring.class)
                 .initRequest("/hello", RequestMethod.GET)
-                .addParameter("name", "Srping")
+                .addParameter("name", "Spring")
                 .runService()
                 .getModelAndView();
 

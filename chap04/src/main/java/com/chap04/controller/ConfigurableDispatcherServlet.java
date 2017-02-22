@@ -34,15 +34,12 @@ public class ConfigurableDispatcherServlet extends DispatcherServlet {
         this.classes = classes;
     }
 
-    public void setClasses(Class<?> ...classes) {
-        this.classes = classes;
-    }
-
     public void setLocations(String ...locations) {
         this.locations = locations;
     }
 
-    public void setRelativeLocations(Class clazz, String... relativeLocations) {
+
+    public void setRelativeLocations(Class clazz, String ...relativeLocations) {
         String[] locations = new String[relativeLocations.length];
         String currentPath = ClassUtils.classPackageAsResourcePath(clazz) + "/";
 
@@ -52,8 +49,14 @@ public class ConfigurableDispatcherServlet extends DispatcherServlet {
         this.setLocations(locations);
     }
 
+    public void setClasses(Class<?> ...classes) {
+        this.classes = classes;
+    }
+
+
     @Override
-    protected void service(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+    protected void service(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
         modelAndView = null;
         super.service(request, response);
     }
@@ -63,7 +66,8 @@ public class ConfigurableDispatcherServlet extends DispatcherServlet {
         AbstractRefreshableWebApplicationContext wac =
                 new AbstractRefreshableWebApplicationContext() {
                     @Override
-                    protected void loadBeanDefinitions(DefaultListableBeanFactory defaultListableBeanFactory) throws BeansException, IOException {
+                    protected void loadBeanDefinitions(DefaultListableBeanFactory defaultListableBeanFactory)
+                            throws BeansException, IOException {
                         if (locations != null) {
                             XmlBeanDefinitionReader xmlReader =
                                     new XmlBeanDefinitionReader(defaultListableBeanFactory);
@@ -76,7 +80,6 @@ public class ConfigurableDispatcherServlet extends DispatcherServlet {
                         }
                     }
                 };
-
         wac.setServletContext(getServletContext());
         wac.setServletConfig(getServletConfig());
         wac.refresh();
@@ -86,6 +89,7 @@ public class ConfigurableDispatcherServlet extends DispatcherServlet {
 
     @Override
     protected void render(ModelAndView mv, HttpServletRequest request, HttpServletResponse response) throws Exception {
+        this.modelAndView = mv;
         super.render(mv, request, response);
     }
 
